@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Willkommen</title> 
+    <style>
+        body {
+            font-family: Helvetica Neue LT W1G 75 Bold;
+            color: #4D4D4D;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+            background-color: white;
+            overflow: hidden;
+        }
+        .welcome-screen {
+            width: 100%;
+            height: 100vh;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 1s ease-in-out;
+        }
+        .header-img {
+            width: 100%;
+            height: auto;
+            margin-bottom: 150px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            color: #4D4D4D;
+            margin-bottom: 300px;
+            text-align: center;
+        }
+        .check-in {
+            width: 100%;
+            height: 100vh;
+            position: absolute;
+            top: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('office.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: top 1s ease-in-out;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            height: 700px;
+			header size: 20pt;
+			placeholder size: 15pt;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            text-align: left;
+            position: relative;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input {
+            width: 550px;
+			position:center;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 20px;
+			border-radius: 10px;
+        }
+        .check-in-button {
+            width: 300px;
+            padding: 10px;
+            box-sizing: border-box;
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+			border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="welcome-screen" id="welcomeScreen">
+        <img src="Bluebar.jpg" alt="Header Image" class="header-img">
+        <h1>Willkommen bei Brother!!!</h1>
+        <button onclick="proceed()">Proceed to Check-In</button>
+    </div>
+
+    <div class="check-in" id="checkInPage">
+        <div class="container">
+            <img src="Bluebar.jpg" alt="Header Image" class="header-img">
+            <h1>Willkommen bei Brother!!!</h1>
+            <h2>Besucherausweiß Check-In</h2>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="nachname">Nachname</label>
+                <input type="text" id="nachname" required>
+            </div>
+            <div class="form-group">
+                <label for="firma">Firmenname</label>
+                <input type="text" id="firma" required>
+            </div>
+            <button class="check-in-button" onclick="checkIn()">Check In</button>
+        </div>
+    </div>
+
+    <script>
+        function proceed() {
+            document.getElementById('welcomeScreen').style.transform = "translateY(-100vh)";
+            document.getElementById('checkInPage').style.top = "0";
+        }
+
+        function checkIn() {
+            const name = document.getElementById('name').value;
+            const nachname = document.getElementById('nachname').value;
+            const firma = document.getElementById('firma').value;
+
+            const url = `brotherwebprint://filename=besucher.lbx&164x102bm.bin&text_name=${encodeURIComponent(name)}&text_nachname=${encodeURIComponent(nachname)}&text_firma=${encodeURIComponent(firma)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>
