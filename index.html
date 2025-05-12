@@ -44,9 +44,9 @@
             color: white;
             margin-bottom: 300px;
             text-align: center;
-            border-radius: 10px;
-            border-color:#F8AF00;
-            background: #F8AF00;
+			border-radius: 10px;
+			border-color:#F8AF00;
+			background: #F8AF00;
         }
         .check-in {
             width: 100%;
@@ -80,7 +80,7 @@
         label {
             display: block;
             margin-bottom: 5px;
-            font-size:18pt;
+			font-size:18pt;
         }
         input {
             width: 100%; /* Make input fields responsive */
@@ -135,8 +135,6 @@
             const name = document.getElementById('name').value;
             const nachname = document.getElementById('nachname').value;
             const firma = document.getElementById('firma').value;
-        
-        }
 
             const url = `brotherwebprint://print?filename=besucher.lbx&164x102bm.bin&text_name=${encodeURIComponent(name)}&text_nachname=${encodeURIComponent(nachname)}&text_firma=${encodeURIComponent(firma)}`;
             window.open(url, '_blank');
