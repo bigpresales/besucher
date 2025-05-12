@@ -138,9 +138,8 @@
         
         }
 
-            const url = `brotherwebprint://filename=besucher.lbx&164x102bm.bin&text_name=${encodeURIComponent(name)}&text_nachname=${encodeURIComponent(nachname)}&text_firma=${encodeURIComponent(firma)}`;
+            const url = `brotherwebprint://print?filename=besucher.lbx&164x102bm.bin&text_name=${encodeURIComponent(name)}&text_nachname=${encodeURIComponent(nachname)}&text_firma=${encodeURIComponent(firma)}`;
             window.open(url, '_blank');
-        resetInputs();
 
             // Return to welcome page after check-in and reset the form
             setTimeout(() => {
