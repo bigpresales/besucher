@@ -125,12 +125,6 @@
         </div>
     </div>
 
-        <div class="button-group">
-            <button onclick="downloadTemplate()">Download Template</button>
-            <button onclick="window.location.href='https://apps.apple.com/us/app/smooth-print/id1629559918'">Smooth Print for iOS</button>
-            <button onclick="window.location.href='https://support.brother.com/g/b/agreement.aspx?dlid=dlfp101087_000&c=eu_ot&lang=en'">Smooth Print for Android</button>
-        </div>
-
     <script>
         function proceed() {
             document.getElementById('welcomeScreen').style.transform = "translateY(-100vh)";
@@ -144,15 +138,7 @@
 
             const url = `brotherwebprint://print?filename=besucher.lbx&size=164x102bm.bin&text_name=${encodeURIComponent(name)}&text_nachname=${encodeURIComponent(nachname)}&text_firma=${encodeURIComponent(firma)}`;
             window.open(url, '_blank');
-}
-            function downloadTemplate() {
-            const link = document.createElement('a');
-            link.href = 'https://github.com/bigpresales/keyence/raw/refs/heads/main/files_keyence.zip'; // 
-            link.download = 'files_keyence.zip';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+
             // Return to welcome page after check-in and reset the form
             setTimeout(() => {
                 document.getElementById('checkInPage').style.top = "100vh";
