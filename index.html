@@ -153,7 +153,7 @@
 			const email = document.getElementById('email').value;
 			const kontakt = document.getElementById('kontakt').value;
 
-            const url = `brotherwebprint://print?filename=besucher.lbx&size=164x102bm.bin&text_vorname=${encodeURIComponent(vorname)}&text_nachname=${encodeURIComponent(nachname)}&text_firma=${encodeURIComponent(firma)}&text_email=${encodeURIComponent(email)}&text_kontakt=${encodeURIComponent(kontakt)}`;
+            const url = `brotherwebprint://print?filename=visitor_brother.lbx&size=164x102bm.bin&text_vorname=${encodeURIComponent(vorname)}&text_nachname=${encodeURIComponent(nachname)}&text_firma=${encodeURIComponent(firma)}&text_email=${encodeURIComponent(email)}&text_kontakt=${encodeURIComponent(kontakt)}`;
             window.open(url, '_blank');
 
             // Return to welcome page after check-in and reset the form
@@ -185,6 +185,7 @@
     </script>
 </body>
 </html>
+
 
 
 
