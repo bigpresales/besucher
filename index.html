@@ -34,7 +34,7 @@
         }
         .header-img {
             width: 100%;
-            height: auto;
+            height: top;
             margin-bottom: 0px;
         }
         button {
@@ -170,14 +170,16 @@
             saveAs(new Blob([wbout], { type: 'application/octet-stream' }), filename);
             localStorage.setItem('visitorFileNumber', ++fileNumber);
 
-            // 5. Reset form and return to welcome screen
-            document.getElementById('vorname').value = '';
-            document.getElementById('nachname').value = '';
-            document.getElementById('firma').value = '';
-            document.getElementById('email').value = '';
-            document.getElementById('kontakt').value = '';
-            document.getElementById('checkInPage').style.top = "100vh";
-            document.getElementById('welcomeScreen').style.transform = "translateY(0)";
+
+// 5. Reset form and return to welcome screen
+document.getElementById('vorname').value = '';
+document.getElementById('nachname').value = '';
+document.getElementById('firma').value = '';
+document.getElementById('email').value = '';
+document.getElementById('kontakt').value = '';
+
+// Scroll back to welcome screen
+document.getElementById('welcomeScreen').scrollIntoView({ behavior: 'smooth' });
         }
 
         // Zoom functionality
@@ -197,4 +199,5 @@
     </script>
 </body>
 </html>
+
 
