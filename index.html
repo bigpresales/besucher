@@ -1,10 +1,15 @@
-
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Willkommen</title>
+    <title>Willkommen</title> 
+
+    <!-- SheetJS for Excel creation -->
+    https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js
+    <!-- FileSaver.js for saving the file locally -->
+    https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js
+
     <style>
         body {
             font-family: Helvetica Neue LT W1G 75 Bold;
@@ -67,7 +72,7 @@
         .container {
             max-width: 600px;
             width: 100%;
-            height: 850px;
+            height: 750px;
             background: rgba(255, 255, 255, 0.8);
             padding: 20px;
             box-sizing: border-box;
@@ -76,7 +81,7 @@
             position: relative;
         }
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 15px;                                                                                                                 
         }
         label {
             display: block;
@@ -97,11 +102,10 @@
             border-radius: 10px;
         }
     </style>
-    https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js</script>
 </head>
 <body>
     <div class="welcome-screen" id="welcomeScreen">
-        Bluebar.jpg
+        <img src="Bluebar.jpg" alt="Header Image" class="header-img">
         <h1>Willkommen bei Brother!!!</h1>
         <div class="button-row">
             <button class="custom-button" onclick="window.open('https://time.hrworks.de/kiosk', '_blank')">
@@ -115,14 +119,14 @@
 
     <div class="check-in" id="checkInPage">
         <div class="container">
-            Bluebar.jpg
-            <h1>Besucherausweis Check-In</h1>
+            <img src="Bluebar.jpg" alt="Header Image" class="header-img">
+            <h1>Besucherausweis Check In</h1>
             <div class="form-group">
                 <label for="vorname">Vorname</label>
                 <input type="text" id="vorname" required>
             </div>
             <div class="form-group">
-                <label for="nachname">Nachname</label>
+                <label for="nachname">Nachame</label>
                 <input type="text" id="nachname" required>
             </div>
             <div class="form-group">
@@ -149,42 +153,38 @@
             const email = document.getElementById('email').value;
             const kontakt = document.getElementById('kontakt').value;
 
+            // 1. Brother print URL
             const url = `brotherwebprint://print?filename=visitor_brother.lbx&size=164x102bm.bin&text_vorname=${encodeURIComponent(vorname)}&text_nachname=${encodeURIComponent(nachname)}&text_firma=${encodeURIComponent(firma)}&text_email=${encodeURIComponent(email)}&text_kontakt=${encodeURIComponent(kontakt)}`;
             window.open(url, '_blank');
 
+            // 2. Save to localStorage
             let data = JSON.parse(localStorage.getItem('visitorData')) || [];
-            data.push({ vorname, nachname, firma, email, kontakt });
+            data.push({ Vorname: vorname, Nachname: nachname, Firma: firma, Email: email, Kontakt: kontakt });
             localStorage.setItem('visitorData', JSON.stringify(data));
 
+            // 3. Create Excel file
             const worksheet = XLSX.utils.json_to_sheet(data);
             const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Visitors");
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Besucher");
 
+            // 4. Save with incremented filename
+            let fileNumber = localStorage.getItem('visitorFileNumber') || 1;
+            const filename = `Besucher_CheckIn_${fileNumber}.xlsx`;
             const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+            saveAs(new Blob([wbout], { type: 'application/octet-stream' }), filename);
+            localStorage.setItem('visitorFileNumber', ++fileNumber);
 
-            // Silent download via hidden link
-            const blob = new Blob([wbout], { type: 'application/octet-stream' });
-            const urlBlob = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = urlBlob;
-            a.download = 'visitor_data.xlsx';
-            a.style.display = 'none';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(urlBlob);
-
-            setTimeout(() => {
-                document.getElementById('checkInPage').style.top = "100vh";
-                document.getElementById('welcomeScreen').style.transform = "translateY(0)";
-                document.getElementById('vorname').value = '';
-                document.getElementById('nachname').value = '';
-                document.getElementById('firma').value = '';
-                document.getElementById('email').value = '';
-                document.getElementById('kontakt').value = '';
-            }, 1000);
+            // 5. Reset form and return to welcome screen
+            document.getElementById('vorname').value = '';
+            document.getElementById('nachname').value = '';
+            document.getElementById('firma').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('kontakt').value = '';
+            document.getElementById('checkInPage').style.top = "100vh";
+            document.getElementById('welcomeScreen').style.transform = "translateY(0)";
         }
 
+        // Zoom functionality
         document.addEventListener('wheel', function(event) {
             if (event.ctrlKey) {
                 event.preventDefault();
@@ -192,6 +192,7 @@
             }
         });
 
+        // Responsive zoom
         function resize() {
             document.body.style.zoom = window.innerWidth / document.body.offsetWidth;
         }
@@ -200,4 +201,3 @@
     </script>
 </body>
 </html>
-
