@@ -104,7 +104,7 @@
         <img src="Bluebar.jpg" alt="Header Image" class="header-img">
         <h1>Willkommen bei Brother!!!</h1>
         <div class="button-row">
-            <button class="custom-button" onclick="window.open('https://time.hrworks.de/kiosk', '_blank')">
+            <button class="custom-button" onclick="warnBeforeRedirect()">
                 Mitarbeiter Brother
             </button>
             <button class="custom-button" onclick="document.getElementById('checkInPage').scrollIntoView({ behavior: 'smooth' });">
@@ -139,6 +139,13 @@
     </div>
 
     <script>
+        
+function warnBeforeRedirect() {
+    const proceed = confirm("Liebe Brother-Mitarbeitenden, nach dem Stempeln bitte diesen Willkommensbildschirm erneut öffnen, damit sich unsere Besucher registrieren können.");
+    if (proceed) {
+        window.open('https://time.hrworks.de/kiosk', '_blank');
+    }
+}
         function checkIn() {
             const vorname = document.getElementById('vorname').value;
             const firma = document.getElementById('firma').value;
@@ -194,6 +201,7 @@ document.getElementById('welcomeScreen').scrollIntoView({ behavior: 'smooth' });
     </script>
 </body>
 </html>
+
 
 
 
