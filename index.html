@@ -66,7 +66,7 @@
         .container {
             max-width: 600px;
             width: 100%;
-            height: 750px;
+            height: 720px;
             background: rgba(255, 255, 255, 0.8);
             padding: 20px;
             box-sizing: border-box;
@@ -118,12 +118,8 @@
             <img src="Bluebar.jpg" alt="Header Image" class="header-img">
             <h1>Besucherausweis Check In</h1>
             <div class="form-group">
-                <label for="vorname">Vorname</label>
+                <label for="vorname">Vor- und Nachname</label>
                 <input type="text" id="vorname" required>
-            </div>
-            <div class="form-group">
-                <label for="nachname">Nachame</label>
-                <input type="text" id="nachname" required>
             </div>
             <div class="form-group">
                 <label for="firma">Firmenname</label>
@@ -144,18 +140,17 @@
     <script>
         function checkIn() {
             const vorname = document.getElementById('vorname').value;
-            const nachname = document.getElementById('nachname').value;
             const firma = document.getElementById('firma').value;
             const email = document.getElementById('email').value;
             const kontakt = document.getElementById('kontakt').value;
 
             // 1. Brother print URL
-            const url = `brotherwebprint://print?filename=visitor_brother.lbx&size=164x102bm.bin&text_vorname=${encodeURIComponent(vorname)}&text_nachname=${encodeURIComponent(nachname)}&text_firma=${encodeURIComponent(firma)}&text_email=${encodeURIComponent(email)}&text_kontakt=${encodeURIComponent(kontakt)}`;
+            const url = `brotherwebprint://print?filename=visitor_brother.lbx&size=164x102bm.bin&text_vorname=${encodeURIComponent(vorname)}&text_firma=${encodeURIComponent(firma)}`;
             window.open(url, '_blank');
 
             // 2. Save to localStorage
             let data = JSON.parse(localStorage.getItem('visitorData')) || [];
-            data.push({ Vorname: vorname, Nachname: nachname, Firma: firma, Email: email, Kontakt: kontakt });
+            data.push({ Vor- und Nachname: vorname, Firma: firma, Email: email, Kontakt: kontakt });
             localStorage.setItem('visitorData', JSON.stringify(data));
 
             // 3. Create Excel file
@@ -173,7 +168,6 @@
 
 // 5. Reset form and return to welcome screen
 document.getElementById('vorname').value = '';
-document.getElementById('nachname').value = '';
 document.getElementById('firma').value = '';
 document.getElementById('email').value = '';
 document.getElementById('kontakt').value = '';
@@ -199,5 +193,6 @@ document.getElementById('welcomeScreen').scrollIntoView({ behavior: 'smooth' });
     </script>
 </body>
 </html>
+
 
 
