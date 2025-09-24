@@ -151,7 +151,7 @@
 
             // 2. Save to localStorage
             let data = JSON.parse(localStorage.getItem('visitorData')) || [];
-            data.push({ Vor- und Nachname: vorname, Firma: firma, Email: email, Kontakt: kontakt });
+            data.push({ Vorname: vorname, Firma: firma, Email: email, Kontakt: kontakt });
             localStorage.setItem('visitorData', JSON.stringify(data));
 
             // 3. Create Excel file
@@ -194,6 +194,7 @@ document.getElementById('welcomeScreen').scrollIntoView({ behavior: 'smooth' });
     </script>
 </body>
 </html>
+
 
 
 
