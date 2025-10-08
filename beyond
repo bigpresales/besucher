@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Willkommen</title> 
+    <style>
+        body {
+            font-family: Helvetica Neue LT W1G 75 Bold;
+            color: #4D4D4D;
+            margin: 0;
+            padding: 10px;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: center;
+            background-color: white;
+            overflow: hidden;
+        }
+        .welcome-screen {
+            width: 100%;
+            height: 100vh;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: transform 1s ease-in-out;
+        }
+        .header-img {
+            width: 100%;
+            height: top;
+            margin-bottom: 0px;
+        }
+        button {
+            padding: 30px 110px;
+            font-size: 22px;
+            cursor: pointer;
+            color: white;
+            margin-bottom: 300px;
+            text-align: center;
+            border-radius: 10px;
+            border-color:#F8AF00;
+            background: #F8AF00;
+        }
+        .check-in {
+            width: 100%;
+            height: 100vh;
+            position: absolute;
+            top: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url('office.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: top 1s ease-in-out;
+            overflow: auto;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            height: 720px;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            text-align: left;
+            position: relative;
+        }
+        .form-group {
+            margin-bottom: 15px;                                                                                                                 
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-size:18pt;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            font-size: 20px;
+            border-radius: 10px;
+        }
+        .check-in-button {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 10px;
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body>
+    <div class="welcome-screen" id="welcomeScreen">
+        <img src="Bluebar.jpg" alt="Header Image" class="header-img">
+        <h1>Willkommen bei Brother</h1>
+        <div class="button-row">
+           
+            <button class="custom-button" onclick="document.getElementById('checkInPage').scrollIntoView({ behavior: 'smooth' });">
+                Besucher Check-In
+            </button>
+        </div>
+    </div>
+
+    <div class="check-in" id="checkInPage">
+        <div class="container">
+            <img src="Bluebar.jpg" alt="Header Image" class="header-img">
+            <h1>Besucherausweis Check-In</h1>
+            <div class="form-group">
+                <label for="vorname">Vor- und Nachname</label>
+                <input type="text" id="vorname" required>
+            </div>
+            <div class="form-group">
+                <label for="firma">Firmenname</label>
+                <input type="text" id="firma" required>
+            </div>
+            <div class="form-group">
+                <label for="email">E-Mail-Adresse</label>
+                <input type="text" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="kontakt">Ansprechpartner bei Brother</label>
+                <input type="text" id="kontakt" required>
+            </div>
+            <br><br>
+            <button class="check-in-button" onclick="checkIn()">Check-In</button>
+        </div>
+    </div>
+
+    <script>
+        function checkIn() {
+            const vorname = document.getElementById('vorname').value;
+            const firma = document.getElementById('firma').value;
+            const email = document.getElementById('email').value;
+            const kontakt = document.getElementById('kontakt').value;
+
+            // 1. Brother print URL
+            const url = `brotherwebprint://print?filename=visitor_brother.lbx&size=164x102bm.bin&text_vorname=${encodeURIComponent(vorname)}&text_firma=${encodeURIComponent(firma)}`;
+            window.open(url, '_blank');
+
+            // 2. Save to localStorage
+            let data = JSON.parse(localStorage.getItem('visitorData')) || [];
+            data.push({ Vorname: vorname, Firma: firma, Email: email, Kontakt: kontakt });
+            localStorage.setItem('visitorData', JSON.stringify(data));
+
+            // 3. Create Excel file
+            const worksheet = XLSX.utils.json_to_sheet(data);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Besucher");
+
+            // 4. Save with incremented filename
+            let fileNumber = localStorage.getItem('visitorFileNumber') || 1;
+            const filename = `Besucher_CheckIn_${fileNumber}.xlsx`;
+            const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+            saveAs(new Blob([wbout], { type: 'application/octet-stream' }), filename);
+            localStorage.setItem('visitorFileNumber', ++fileNumber);
+
+
+// 5. Reset form and return to welcome screen
+document.getElementById('vorname').value = '';
+document.getElementById('firma').value = '';
+document.getElementById('email').value = '';
+document.getElementById('kontakt').value = '';
+
+// Scroll back to welcome screen
+document.getElementById('welcomeScreen').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Zoom functionality
+        document.addEventListener('wheel', function(event) {
+            if (event.ctrlKey) {
+                event.preventDefault();
+                document.body.style.zoom = (parseFloat(document.body.style.zoom) || 1) + event.deltaY * -0.01;
+            }
+        });
+
+        // Responsive zoom
+        function resize() {
+            document.body.style.zoom = window.innerWidth / document.body.offsetWidth;
+        }
+        window.addEventListener('resize', resize);
+        window.addEventListener('load', resize);
+    </script>
+</body>
+</html>
