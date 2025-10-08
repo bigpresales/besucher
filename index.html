@@ -104,9 +104,9 @@
         <img src="Bluebar.jpg" alt="Header Image" class="header-img">
         <h1>Willkommen bei Brother</h1>
         <div class="button-row">
-            <button class="custom-button" onclick="window.open('https://time.hrworks.de/kiosk', '_blank')">
+<button class="custom-button" onclick="openHrworks()">
     Mitarbeiter Brother
-</button>
+</button
             <button class="custom-button" onclick="document.getElementById('checkInPage').scrollIntoView({ behavior: 'smooth' });">
                 Besucher Check-In
             </button>
@@ -139,6 +139,10 @@
     </div>
 
     <script>
+        
+    function openHrworks() {
+        window.open('https://time.hrworks.de/kiosk', '_blank');
+    }
         function checkIn() {
             const vorname = document.getElementById('vorname').value;
             const firma = document.getElementById('firma').value;
