@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Willkommen</title> 
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Willkommen</title>
     <style>
         body {
-            font-family: Helvetica Neue LT W1G 75 Bold;
+            /* Falls die Schrift nicht verfügbar ist, gib Fallbacks an */
+            font-family: "Helvetica Neue LT W1G 75 Bold", "Helvetica Neue", Arial, sans-serif;
             color: #4D4D4D;
             margin: 0;
             padding: 10px;
@@ -17,8 +18,12 @@
             justify-content: flex-start;
             text-align: center;
             background-color: white;
-            overflow: hidden;
+
+            /* Quick Fix: Scrollen wieder erlauben */
+            /* overflow: hidden; */
+            overflow: auto;
         }
+
         .welcome-screen {
             width: 100%;
             height: 100vh;
@@ -32,11 +37,19 @@
             left: 0;
             transition: transform 1s ease-in-out;
         }
+
         .header-img {
             width: 100%;
-            height: top;
-            margin-bottom: 0px;
+            /* Fix: Ungültiges 'height: top' ersetzt */
+            height: auto;
+            margin-bottom: 0;
+            display: block;
         }
+
+        .button-row {
+            margin-top: 20px;
+        }
+
         button {
             padding: 30px 110px;
             font-size: 22px;
@@ -45,9 +58,10 @@
             margin-bottom: 300px;
             text-align: center;
             border-radius: 10px;
-            border-color:#F8AF00;
+            border: 2px solid #F8AF00;
             background: #F8AF00;
         }
+
         .check-in {
             width: 100%;
             height: 100vh;
@@ -63,6 +77,7 @@
             transition: top 1s ease-in-out;
             overflow: auto;
         }
+
         .container {
             max-width: 600px;
             width: 100%;
@@ -74,28 +89,39 @@
             text-align: left;
             position: relative;
         }
+
         .form-group {
-            margin-bottom: 15px;                                                                                                                 
+            margin-bottom: 15px;
         }
+
         label {
             display: block;
             margin-bottom: 5px;
-            font-size:18pt;
+            font-size: 18pt;
         }
+
         input {
             width: 100%;
             padding: 10px;
             box-sizing: border-box;
             font-size: 20px;
             border-radius: 10px;
+            border: 1px solid #ccc;
         }
+
         .check-in-button {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             box-sizing: border-box;
             border-radius: 10px;
+            font-size: 20px;
+            color: #fff;
+            background: #F8AF00;
+            border: 2px solid #F8AF00;
+            cursor: pointer;
         }
     </style>
+    <!-- Libraries für Excel und File-Save -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.0/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
 </head>
@@ -104,8 +130,8 @@
         <img src="Bluebar.jpg" alt="Header Image" class="header-img">
         <h1>Willkommen bei Brother</h1>
         <div class="button-row">
-           
-            <button class="custom-button" onclick="document.getElementById('checkInPage').scrollIntoView({ behavior: 'smooth' });">
+            <button class="custom-button"
+                    onclick="document.getElementById('checkInPage').scrollIntoView({ behavior: 'smooth' });">
                 Besucher Check-In
             </button>
         </div>
@@ -115,22 +141,28 @@
         <div class="container">
             <img src="Bluebar.jpg" alt="Header Image" class="header-img">
             <h1>Besucherausweis Check-In</h1>
+
             <div class="form-group">
                 <label for="vorname">Vor- und Nachname</label>
                 <input type="text" id="vorname" required>
             </div>
+
             <div class="form-group">
                 <label for="firma">Firmenname</label>
                 <input type="text" id="firma" required>
             </div>
+
             <div class="form-group">
                 <label for="email">E-Mail-Adresse</label>
-                <input type="text" id="email" required>
+                <!-- type="email" gibt bessere Mobile-Tastatur + Basisvalidierung -->
+                <input type="email" id="email" required>
             </div>
+
             <div class="form-group">
                 <label for="kontakt">Ansprechpartner bei Brother</label>
                 <input type="text" id="kontakt" required>
             </div>
+
             <br><br>
             <button class="check-in-button" onclick="checkIn()">Check-In</button>
         </div>
@@ -138,13 +170,21 @@
 
     <script>
         function checkIn() {
-            const vorname = document.getElementById('vorname').value;
-            const firma = document.getElementById('firma').value;
-            const email = document.getElementById('email').value;
-            const kontakt = document.getElementById('kontakt').value;
+            const vorname = document.getElementById('vorname').value.trim();
+            const firma = document.getElementById('firma').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const kontakt = document.getElementById('kontakt').value.trim();
+
+            // Optional: simple Validierung
+            if (!vorname || !firma || !email || !kontakt) {
+                alert('Bitte alle Felder ausfüllen.');
+                return;
+            }
 
             // 1. Brother print URL
             const url = `brotherwebprint://print?filename=visitor_brother.lbx&size=164x102bm.bin&text_vorname=${encodeURIComponent(vorname)}&text_firma=${encodeURIComponent(firma)}`;
+            // Hinweis: Manche Browser blockieren window.open für Custom-Schemes.
+            // Falls das nicht funktioniert, evtl. per Standort-App oder Intent-Handler testen.
             window.open(url, '_blank');
 
             // 2. Save to localStorage
@@ -158,34 +198,51 @@
             XLSX.utils.book_append_sheet(workbook, worksheet, "Besucher");
 
             // 4. Save with incremented filename
-            let fileNumber = localStorage.getItem('visitorFileNumber') || 1;
+            let fileNumber = parseInt(localStorage.getItem('visitorFileNumber') || '1', 10);
             const filename = `Besucher_CheckIn_${fileNumber}.xlsx`;
             const wbout = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
             saveAs(new Blob([wbout], { type: 'application/octet-stream' }), filename);
-            localStorage.setItem('visitorFileNumber', ++fileNumber);
+            localStorage.setItem('visitorFileNumber', String(fileNumber + 1));
 
+            // 5. Reset form
+            document.getElementById('vorname').value = '';
+            document.getElementById('firma').value = '';
+            document.getElementById('email').value = '';
+            document.getElementById('kontakt').value = '';
 
-// 5. Reset form and return to welcome screen
-document.getElementById('vorname').value = '';
-document.getElementById('firma').value = '';
-document.getElementById('email').value = '';
-document.getElementById('kontakt').value = '';
+            // Scroll back to welcome screen (mit Fallback für ältere Android-Versionen)
+            const welcome = document.getElementById('welcomeScreen');
+            if (welcome && welcome.scrollIntoView) {
+                try {
+                    welcome.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } catch (e) {
+                    // Falls smooth-Option nicht unterstützt wird:
+                    welcome.scrollIntoView();
+                }
+            }
 
-// Scroll back to welcome screen
-document.getElementById('welcomeScreen').scrollIntoView({ behavior: 'smooth' });
+            // Robuster Fallback: nach kurzer Zeit sicher nach oben scrollen
+            setTimeout(function () {
+                window.scrollTo(0, 0);
+            }, 50);
         }
 
-        // Zoom functionality
-        document.addEventListener('wheel', function(event) {
+        // Zoom über Mausrad ist auf Tablets nicht relevant; du kannst es entfernen, wenn du möchtest.
+        document.addEventListener('wheel', function (event) {
             if (event.ctrlKey) {
                 event.preventDefault();
-                document.body.style.zoom = (parseFloat(document.body.style.zoom) || 1) + event.deltaY * -0.01;
+                const currentZoom = parseFloat(document.body.style.zoom) || 1;
+                document.body.style.zoom = Math.max(0.5, Math.min(2, currentZoom + event.deltaY * -0.01));
             }
         });
 
-        // Responsive zoom
+        // Responsive zoom — optional, kann bei einigen Browsern Layout-Sprünge verursachen
         function resize() {
-            document.body.style.zoom = window.innerWidth / document.body.offsetWidth;
+            // Achtung: offsetWidth mit Padding kann abweichen; nur verwenden, wenn es gewollt ist.
+            const baseWidth = document.body.offsetWidth || window.innerWidth;
+            if (baseWidth > 0) {
+                document.body.style.zoom = window.innerWidth / baseWidth;
+            }
         }
         window.addEventListener('resize', resize);
         window.addEventListener('load', resize);
