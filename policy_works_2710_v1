@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Privacy Policy</title>
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background: white;
+        color: #333;
+    }
+
+    .header {
+        width: 100%;
+        background: #0078D4;
+        padding: 20px;
+        text-align: center;
+        color: white;
+        font-size: 22px;
+        font-weight: bold;
+    }
+
+    .content-wrapper {
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .policy-box {
+        width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 20px;
+        background: #fafafa;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        box-sizing: border-box;
+        overflow-y: auto;
+        max-height: 70vh;
+        line-height: 1.6;
+        word-wrap: break-word;
+        white-space: pre-line;
+    }
+
+    .button {
+        margin: 30px auto;
+        display: block;
+        padding: 15px;
+        width: 90%;
+        max-width: 400px;
+        background: #F8AF00;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        font-size: 20px;
+        text-align: center;
+    }
+
+    @media (min-width: 768px) {
+        .header {
+            font-size: 26px;
+        }
+        .policy-box {
+            max-height: 75vh;
+            padding: 30px;
+            font-size: 18px;
+        }
+        .button {
+            font-size: 22px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div class="header">Privacy Policy</div>
+
+<div class="content-wrapper">
+    <div class="policy-box">
+
+General Privacy Policy of Brother Industries, Ltd.
+1 OCTOBER 2025
+
+This privacy policy describes how Brother Industries, Ltd. a company incorporated and located in Japan with its address in 15-1, Naeshiro-cho, Mizuho-ku, Nagoya 467-8561, Japan ('Brother', 'we', 'us' or 'our') collects and processes Personal Information (as defined below) about you, how we use and protect your Personal Information, and your rights in relation to your Personal Information.
+
+This privacy policy applies to all Personal Information that we collect or process about you. Personal Information is any data that can be used to identify an individual by the data itself or in combination with any other data that we can reasonably access to ('Personal Information').
+
+Please note that we operate globally either directly or through our subsidiaries ('Brother Group companies'). Each of our Brother Group companies have its own privacy policy. In case we collect and process your Personal Information through any of our Brother Group companies, such collection, use and processing will be subject to the terms of the privacy policy of the relevant Brother group company.
+
+For the purposes of the General Data Protection Regulation and the Data Protection Act 2018, Brother International Europe, Ltd., a company incorporated and located in United Kingdom with its address at Brother House, 1 Tame Street, Audenshaw, Manchester M34 5JE, U.K., is our representative in the United Kingdom, and its Italian branch office is our representative in the European Union.
+
+For the purposes of the Personal Information Protection Act of the Republic of Korea, Brother International Korea Co., Ltd., a company incorporated and located in Republic of Korea with its address at 7F, Youngpoong Bldg., 542, Gangnam-daero, Gangnam-gu, Seoul, Republic of Korea 06110, is our representative in the Republic of Korea. Our representative can be contacted through the S&IT department by telephone at +82 02-572-4362 or by email at bicksvc@brother-korea.com. (For the Korean version of our Privacy Policy, please click here.)
+
+1. Personal Information We Use
+We may collect Personal Information about you directly from you or from other sources such as Brother Group companies as described below in this privacy policy. In addition, we may be required by laws or by our contractual obligations to collect certain information that includes your Personal Information. If you fail to provide such required information, we may not be able to fulfill our obligations required by laws or contracts.
+
+1.1 Personal Information We Collect Directly From You
+The categories of Personal Information that we may collect directly from you include the following:
+
+personal details (e.g. name, date of birth, job title);
+contact details (e.g. phone number, email address, postal address or mobile number);
+payment details and other information related to any transaction that you enter with us;
+if you are a customer, serial numbers of your Brother products (we may be able to identify you through your serial number if you have registered your Brother products with us or any of our Brother Group companies, or if you have created an account on our websites and/or subscripted to any services of any of our Brother Group companies);
+IP addresses and MAC identifiers (while you access our websites and other online service);
+1.2 Personal Information We Collect From Other Sources:
+We may collect your Personal Information from other sources that are legally permitted, including through company directories, phone directories and/or credit information provided by credit companies. Such Personal Information includes the following: personal details (e.g. name, date of birth, job title, credit information);
+contact details (e.g. phone number, email address, postal address or mobile number);
+2. How We Use Your Personal Information and the Basis on Which We Use It
+We reserve the right to use your Personal Information for the following purposes, or the purposes we notify you or you agree separately. We will not use your Personal Information for any purposes beyond the scope necessary for such purposes unless we obtain your consent.
+
+If you are a customer, we use your Personal Information to:
+
+ensure that our records are kept accurate and up to date;
+comply with legal obligations to which we are subject;
+check and maintain quality control;
+carry out improvement of our products and services and market analysis, ensure correct functioning of logistics and check stocks;
+provide you with customer service, after sale support and software updates;
+ship products to you;
+recall products.
+If you are a business partner, we use your Personal Information to:
+
+carry out background checks prior to engaging you as a business partner;
+contact you with questions and other information regarding the services and products you provide;
+ensure that our records are kept accurate and up to date where you, your employees or contractors work on our facilities;
+pay invoices;
+arrange your access to our office or other area at your request in case that such access is allowed under our contracts;
+comply with legal obligations to which we are subject.
+If you are a shareholder, we use your Personal Information to:
+
+comply with legal obligations to which we are subject;
+implement measures for shareholders such as questionnaires;
+carry out shareholder management based on laws.
+If you are a job applicant, we use your Personal Information to:
+
+provide you with information on recruiting and contact you;
+carry out operational control for recruiting;
+respond to your inquiry.
+If you are a retiree, we use your Personal Information to:
+
+manage records regarding you during your continuance in office;
+carry out management of retirees such as the work related to social insurance;
+respond to your inquiry.
+We must have a legal basis to process your Personal Information. In most cases the legal basis will be one of the following:
+
+to fulfil our contractual obligations to you. If you are a customer our contractual obligations to you include shipping products, providing customer service, and after sale support. If you are a business partner our contractual obligations to you include paying invoices correctly and ensuring you are able to access our premises when required;
+to comply with our legal obligations to you, for example health and safety obligations while you are on our premises, or to a third party (e.g. the taxation authorities); and
+to meet our legitimate interests. If you are a customer our legitimate interests, for example, are maintaining quality control and logistics, carrying out analysis for product development and market research, checking stocks and ensuring that our records are kept up to date and accurate. If you are a business partner our legitimate interest, for example, are ensuring that the services you provide are appropriate for our needs, that your services function correctly with our systems, that any complaints or concerns can be promptly relayed to you, and our records are kept up to date and accurate.
+3. Your Rights Over Your Personal Information
+You have certain rights regarding your Personal Information, subject to local law. These include the following rights to:
+
+access your Personal Information;
+rectify the information we hold about you;
+erase your Personal Information;
+restrict our use of your Personal Information;
+object to our use of your Personal Information;
+receive your Personal Information in a usable electronic format and transmit it to a third party (right to data portability); and
+lodge a complaint with your local data protection authority.
+We encourage you to contact us to update or correct your Personal Information if it changes or if the Personal Information we hold about you is inaccurate.
+
+Please note that we will likely require additional information from you in order to honour your requests.
+
+If you would like to discuss or exercise such rights, please contact us at the details below.
+
+4. Automated Decisions About You
+We may also make automated decisions about you based on your Personal Information in the following circumstances:
+
+If you are a customer to select personalized offers, discounts or recommendations to send you based on your shopping history, browsing history and/or usage of Brother products;
+Subject to local legal requirements and limitations, you can contact us to object to our use of automated decision-making.
+When we adopt automated decision making involving profiling based on your Personal Information in providing our service, we will separately provide you with information about the logic involved and any effects of the automated decisions and seek your consent.
+
+5. Information Sharing
+We may share your Personal Information with third parties under the following circumstances:
+
+Cloud service providers. We partner with cloud service providers such as Microsoft and Amazon to store your Personal Information in the cloud.
+Business service providers. We engage business service providers to send newsletters and marketing emails, support email and messaging services, provide data analytics services and to process secure payments and fulfil orders.
+Brother Group companies are owned by Brother Industries, Ltd, so we work closely with other businesses and companies that fall under the Brother Group family. We may share certain information about serial numbers of our products that customers use, buying and browsing history, and customers' questions or concerns with Brother Industries, Ltd and other Brother Group companies for marketing analysis, improvement of our products and services, internal reporting, and response to customers' questions or concerns.
+Law enforcement agencies, courts, regulators, government authorities. We may share your Personal Information with these parties where we believe this is necessary to comply with a legal or regulatory obligation, or otherwise to protect our rights or the rights of any third party.
+Asset purchasers. We may share your Personal Information with any third party that purchases, or to which we transfer, all or substantially all of our assets and business. Should such a sale or transfer occur, we will use reasonable efforts to try to ensure that the entity to which we transfer your Personal Information uses it in a manner that is consistent with this Privacy Policy.
+6. Information Security and Storage
+We implement technical and organizational measures to ensure a level of security appropriate to the risk to the Personal Information we process. These measures are aimed at ensuring the on-going integrity and confidentiality of Personal Information. We evaluate these measures on a regular basis to ensure the security of the processing.
+
+We will erase your Personal Information when it is no longer necessary in relation to the purposes for which it have been collected or when your consent is withdrawn and we have no other legal ground to retain it. When deciding how long to keep your Personal Information, we comply with our legal obligations and meet regulators' expectations.
+
+We will retain your Personal Information in accordance with our data retention policy which sets out data retention periods required or permitted by applicable law.
+
+7. Use of Google Analytics
+We use Google Analytics, a web analytics services provided by Google LLC (“Google”), to track and monitor how you use our website. In connection with use of Google Analytics, we use cookies to distinguish unique users by assigning a randomly generated client ID. It is used to monitor and calculate visitor, session and campaign data for the site analytics report.
+
+We may also implement Google Analytics Demographics and Interest Reporting, a feature of Google Analytics Advertising, to help us understand the demographics and interests of our website users. In connection with use of Google Analytics Advertising, our website and third-party vendors, including Google, use first-party cookies (such as the Google Analytics cookie) or other first-party identifiers, and third-party cookies (such as Google advertising cookies) or other third-party identifiers together.
+
+For more information about how Google handles your information, please see https://policies.google.com/technologies/partner-sites(a third party website will open).
+
+If you would like to prevent your data from being collected and processed by Google Analytics, you can opt-out from Google Analytics by downloading and installing the Google Analytics' Opt-out Add-on https://tools.google.com/dlpage/gaoptout/(a third party website will open).
+Brother shall not circumvent any privacy features (e.g., an opt-out) that are part of Google Analytics.
+
+8. International Data Transfers
+Please note that Brother Industries Ltd. is located in Japan and thus your Personal Information will be submitted to, stored, and processed in Japan and which is currently regarded as ensuring an adequate level of protection for Personal Information under European Union data protection law. Furthermore, we may work with third party service providers while storing or processing your Personal Information, for example, your Personal Information may be stored in the cloud by our cloud service providers and they may keep your Personal Information in locations outside the European Economic Area, which do not provide an adequate level of protection.
+
+We have put in place appropriate safeguards (such as contractual commitments) in accordance with applicable legal requirements to ensure that your data is adequately protected. For more information on the appropriate safeguards in place, please contact us at the details below.
+
+9. Contact Us
+Brother Industries, Ltd. is the controller responsible for the Personal Information we collect and process.
+
+If you have any questions or concerns regarding the way in which your Personal Information has been used, please contact us at the email address provided below. Please note that, depending on the nature of your request or inquiry, we may need to confirm your identity before we process it.
+
+data.protection@brother.co.jp
+
+10. Changes to the Policy
+You may request a digital copy of this privacy policy from us using the contact details set out above. We may modify or update this privacy policy from time to time. You will be able to see when we last updated the privacy policy because we will include a revision date. Changes and additions to this privacy policy are effective from the date on which they are posted. Please review this privacy policy from time to time to check whether we have made any changes to the way in which we use your Personal Information.
+    </div>
+
+    <button class="button" onclick="window.location.href='index.html'">Back to Check-In</button>
+</div>
+
+</body>
+</html>
