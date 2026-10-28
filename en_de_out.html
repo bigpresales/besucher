@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Willkommen</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            color: #4D4D4D;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            background-color: white;
+        }
+        .header-img { width: 100%; height: auto; display: block; }
+
+        /* ---------- Welcome screen ---------- */
+        .welcome-screen {
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: white;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .welcome-screen.hidden { display: none; }
+        .button-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+            width: 100%;
+            max-width: 900px;
+        }
+        .button-row .checkout { grid-column: 1 / -1; justify-self: center; width: 50%; }
+        button.big {
+            padding: 30px 20px;
+            font-size: 22px;
+            cursor: pointer;
+            color: white;
+            border-radius: 10px;
+            border: 2px solid #F8AF00;
+            background: #F8AF00;
+        }
+        button.big.checkout { background: #4D4D4D; border-color: #4D4D4D; }
+
+        /* ---------- Check-in forms ---------- */
+        .check-in {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: flex-start;
+            background-image: url('office.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .check-in.active { display: flex; }
+        .container {
+            max-width: 600px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            text-align: left;
+        }
+        .container h1 { text-align: center; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-size: 18pt; }
+        input[type="text"],
+        input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            font-size: 20px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            background-color: #fff;
+        }
+        input[type="checkbox"] { transform: scale(1.3); margin-right: 10px; }
+        .check-in-button {
+            width: 100%;
+            padding: 12px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            font-size: 20px;
+            color: #fff;
+            background: #F8AF00;
+            border: 2px solid #F8AF00;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .back-button {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            font-size: 16px;
+            color: #4D4D4D;
+            background: #eee;
+            border: 1px solid #ccc;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .privacy-toggle {
+            color: #0078D4;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 10px;
+            display: block;
+            margin: 3px 0 0 32px;
+        }
+
+        /* ---------- Scanner overlay ---------- */
+        #scanner {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.92);
+            z-index: 100;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 14px;
+            padding: 20px;
+            box-sizing: border-box;
+            color: white;
+        }
+        #scanner.active { display: flex; }
+        #scanVideo {
+            width: 100%;
+            max-width: 600px;
+            max-height: 55vh;
+            border-radius: 10px;
+            background: #000;
+            object-fit: cover;
+        }
+        #scanStatus { font-size: 18px; }
+        #scanView, #thanksView {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+        #scanCancel {
+            padding: 12px 20px; font-size: 18px; border-radius: 10px; border: none;
+            cursor: pointer; background: #eee; color: #333; width: 100%;
+        }
+        #thanksView h1 { margin: 0; font-size: 36px; }
+        #countdown { font-weight: bold; font-size: 28px; color: #F8AF00; }
+        .manual button { background: #F8AF00; color: white; }
+        #scanCancel { background: #eee; color: #333; width: 100%; max-width: 600px; }
+
+        /* ---------- Toast ---------- */
+        #toast {
+            position: fixed;
+            left: 50%;
+            bottom: 30px;
+            transform: translateX(-50%);
+            background: #333;
+            color: white;
+            padding: 16px 28px;
+            border-radius: 10px;
+            font-size: 20px;
+            display: none;
+            z-index: 200;
+            max-width: 90%;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= WELCOME ================= -->
+<div class="welcome-screen" id="welcomeScreen">
+    <img src="Bluebar.jpg" class="header-img" id="secretHeader" alt="Header">
+    <h1>Willkommen bei Brother!!!</h1>
+
+    <div class="button-row">
+        <button class="big" onclick="showForm('englishForm')">Visitor Check-In (English)</button>
+        <button class="big" onclick="showForm('germanForm')">Besucher Check-In (Deutsch)</button>
+        <button class="big checkout" onclick="startScan()">Check-Out / Abmelden</button>
+    </div>
+</div>
+
+<!-- ================= ENGLISH FORM ================= -->
+<div class="check-in" id="englishForm">
+    <div class="container">
+        <img src="Bluebar.jpg" class="header-img" alt="Header">
+        <h1>Visitor Check-In</h1>
+
+        <div class="form-group">
+            <label for="en_vorname">Name and Surname</label>
+            <input type="text" id="en_vorname">
+        </div>
+        <div class="form-group">
+            <label for="en_firma">Company name</label>
+            <input type="text" id="en_firma">
+        </div>
+        <div class="form-group">
+            <label for="en_email">E-Mail Address</label>
+            <input type="email" id="en_email">
+        </div>
+        <div class="form-group">
+            <label for="en_kontakt">Brother Contact Person</label>
+            <input type="text" id="en_kontakt">
+        </div>
+
+        <p style="margin-left:32px; margin-top:3px; font-size:12px;">
+            <strong>By submitting this form, I agree to the following:</strong>
+        </p>
+
+        <div class="form-group">
+            <label for="en_consent_event" style="display:flex; align-items:center; gap:8px; font-size:10px;">
+                <input type="checkbox" id="en_consent_event">
+                <strong>Event participation</strong>
+            </label>
+            <p style="margin-left:32px; margin-top:3px; font-size:10px;">
+                I consent to the processing of my personal data by Brother International GmbH
+                for the purpose of event registration and participation in accordance with the Privacy Policy.
+            </p>
+        </div>
+
+        <div class="form-group">
+            <label for="en_consent_marketing" style="display:flex; align-items:center; gap:8px; font-size:10px;">
+                <input type="checkbox" id="en_consent_marketing">
+                <strong>Marketing communications</strong>
+            </label>
+            <p style="margin-left:32px; margin-top:3px; font-size:10px;">
+                I consent to receiving email communications from Brother International GmbH,
+                including newsletters, promotional materials, and information about products and services.
+            </p>
+        </div>
+
+        <div class="form-group">
+            <label for="en_consent_privacy" style="display:flex; align-items:center; gap:8px; font-size:10px;">
+                <input type="checkbox" id="en_consent_privacy">
+                <span><strong>I agree to the Privacy Policy.</strong></span>
+            </label>
+            <span class="privacy-toggle" onclick="window.location.href='privacy.html'">Read more</span>
+
+            <button class="check-in-button" onclick="checkIn('en')">Check-In</button>
+            <button class="back-button" onclick="showWelcome()">Back</button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= GERMAN FORM ================= -->
+<div class="check-in" id="germanForm">
+    <div class="container">
+        <img src="Bluebar.jpg" class="header-img" alt="Header">
+        <h1>Besucher Check-In</h1>
+
+        <div class="form-group">
+            <label for="de_vorname">Vor- und Nachname</label>
+            <input type="text" id="de_vorname">
+        </div>
+        <div class="form-group">
+            <label for="de_firma">Firmenname</label>
+            <input type="text" id="de_firma">
+        </div>
+        <div class="form-group">
+            <label for="de_email">E-Mail-Adresse</label>
+            <input type="email" id="de_email">
+        </div>
+        <div class="form-group">
+            <label for="de_kontakt">Ansprechpartner bei Brother</label>
+            <input type="text" id="de_kontakt">
+        </div>
+
+        <p style="margin-left:32px; margin-top:3px; font-size:12px;">
+            <strong>Mit dem Absenden dieses Formulars erkläre ich mich mit Folgendem einverstanden:</strong>
+        </p>
+
+        <div class="form-group">
+            <label for="de_consent_event" style="display:flex; align-items:center; gap:8px; font-size:10px;">
+                <input type="checkbox" id="de_consent_event">
+                <strong>Teilnahme an der Veranstaltung</strong>
+            </label>
+            <p style="margin-left:32px; margin-top:3px; font-size:10px;">
+                Ich willige in die Verarbeitung meiner personenbezogenen Daten durch die Brother International GmbH
+                zum Zweck der Anmeldung und Teilnahme an der Veranstaltung gemäß der
+                Datenschutzerklärung ein.
+            </p>
+        </div>
+
+        <div class="form-group">
+            <label for="de_consent_marketing" style="display:flex; align-items:center; gap:8px; font-size:10px;">
+                <input type="checkbox" id="de_consent_marketing">
+                <strong>Marketing-Kommunikation</strong>
+            </label>
+            <p style="margin-left:32px; margin-top:3px; font-size:10px;">
+                Ich willige in den Erhalt von E-Mails der Brother International GmbH ein,
+                einschließlich Newslettern, Werbematerialien und Informationen zu Produkten und Dienstleistungen.
+            </p>
+        </div>
+
+        <div class="form-group">
+            <label for="de_consent_privacy" style="display:flex; align-items:center; gap:8px; font-size:10px;">
+                <input type="checkbox" id="de_consent_privacy">
+                <span><strong>Ich stimme der Datenschutzerklärung zu.</strong></span>
+            </label>
+            <span class="privacy-toggle" onclick="window.location.href='privacy.html'">Mehr erfahren</span>
+
+            <button class="check-in-button" onclick="checkIn('de')">Check-In</button>
+            <button class="back-button" onclick="showWelcome()">Zurück</button>
+        </div>
+    </div>
+</div>
+
+<!-- ================= QR SCANNER (CHECK-OUT) ================= -->
+<div id="scanner">
+    <div id="scanView">
+        <h2>Check-Out</h2>
+        <video id="scanVideo" playsinline muted></video>
+        <div id="scanStatus">QR-Code auf dem Badge scannen / Scan the QR code on the badge</div>
+        <button id="scanCancel" onclick="stopScan()">Abbrechen / Cancel</button>
+    </div>
+    <div id="thanksView">
+        <h1>Danke für Ihren Besuch!</h1>
+        <h1>Thank you for your visit!</h1>
+        <p style="font-size:18px;">
+            Zurück zum Start in / Back to start in <span id="countdown">10</span> s
+        </p>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+    /* ================= SETTINGS ================= */
+    const ID_LENGTH = 6;                 // 000001
+    const SEND_ID_TO_TEMPLATE = true;    // false = let the printer's own numbering create the ID
+
+    /* ================= STORAGE HELPERS ================= */
+    function loadVisitors() {
+        try { return JSON.parse(localStorage.getItem("visitors") || "[]"); }
+        catch (e) { return []; }
+    }
+    function saveVisitors(list) {
+        try { localStorage.setItem("visitors", JSON.stringify(list)); } catch (e) {}
+    }
+    function pad(n) { return String(n).padStart(ID_LENGTH, "0"); }
+
+    // next ID = highest known ID + 1 (also counts IDs added by scanning)
+    function nextId(list) {
+        let max = 0;
+        try { max = parseInt(localStorage.getItem("lastId") || "0", 10) || 0; } catch (e) {}  // keeps counting after the list was deleted
+        list.forEach(v => { const n = parseInt(v.id, 10); if (n > max) max = n; });
+        return pad(max + 1);
+    }
+
+    function saveToAndroid(record) {
+        if (typeof Android !== "undefined" && Android.saveVisitor) {
+            Android.saveVisitor(JSON.stringify(record));
+        }
+    }
+
+    function toast(msg, ms = 4000) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.style.display = "block";
+        clearTimeout(toast._t);
+        toast._t = setTimeout(() => t.style.display = "none", ms);
+    }
+
+    /* ================= SCREENS ================= */
+    function showForm(id) {
+        document.getElementById("welcomeScreen").classList.add("hidden");
+        document.querySelectorAll(".check-in").forEach(f => f.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+        window.scrollTo(0, 0);
+    }
+    function showWelcome() {
+        document.querySelectorAll(".check-in").forEach(f => f.classList.remove("active"));
+        document.getElementById("welcomeScreen").classList.remove("hidden");
+        window.scrollTo(0, 0);
+    }
+
+    /* ================= CHECK-IN ================= */
+    function checkIn(lang) {
+        const $ = id => document.getElementById(lang + "_" + id);
+
+        const vorname = $("vorname").value.trim();
+        const firma   = $("firma").value.trim();
+        const email   = $("email").value.trim();
+        const kontakt = $("kontakt").value.trim();
+
+        const consent_event     = $("consent_event").checked;
+        const consent_marketing = $("consent_marketing").checked;
+        const consent_privacy   = $("consent_privacy").checked;
+
+        const msgs = {
+            en: { fields: "Please fill in all fields.",
+                  consent: "Please agree to Event participation and the Privacy Policy." },
+            de: { fields: "Bitte füllen Sie alle Felder aus.",
+                  consent: "Bitte stimmen Sie der Teilnahme an der Veranstaltung und der Datenschutzerklärung zu." }
+        };
+
+        if (!vorname || !firma || !email || !kontakt) { alert(msgs[lang].fields); return; }
+        if (!consent_event || !consent_privacy)       { alert(msgs[lang].consent); return; }
+
+        const visitors = loadVisitors();
+        const id = nextId(visitors);
+
+        const visitor = {
+            id, vorname, firma, email, kontakt,
+            language: lang,
+            timestamp: new Date().toISOString(),   // check-in time
+            checkout: null,
+            source: "checkin",
+            consent_event, consent_marketing, consent_privacy
+        };
+
+        visitors.push(visitor);
+        saveVisitors(visitors);
+        saveToAndroid(visitor);
+
+        // clear this form
+        ["vorname", "firma", "email", "kontakt"].forEach(f => $(f).value = "");
+        ["consent_event", "consent_marketing", "consent_privacy"].forEach(f => $(f).checked = false);
+
+        showWelcome();
+        toast((lang === "de" ? "Check-In erfolgreich. Badge-ID: " : "Checked in. Badge ID: ") + id);
+
+        // print badge last, since this navigates to the print app
+        let url = `brotherwebprint://print?filename=visitor_brother.lbx&size=164x102bm.bin` +
+                  `&text_vorname=${encodeURIComponent(vorname)}` +
+                  `&text_firma=${encodeURIComponent(firma)}`;
+        if (SEND_ID_TO_TEMPLATE) url += `&text_id=${encodeURIComponent(id)}`;
+        window.location.href = url;
+    }
+
+    /* ================= CHECK-OUT (QR SCAN) ================= */
+    /* QR content: ID; Name; Firma; E-Mail; Kontakt; Eintrittsdatum */
+    let stream = null;
+    let scanning = false;
+    let countdownTimer = null;
+
+    function openOverlay(view) {
+        document.getElementById("scanner").classList.add("active");
+        document.getElementById("scanView").style.display   = view === "scan"   ? "flex" : "none";
+        document.getElementById("thanksView").style.display = view === "thanks" ? "flex" : "none";
+    }
+    function closeOverlay() {
+        document.getElementById("scanner").classList.remove("active");
+    }
+
+    async function startScan() {
+        // Option A: native Android bridge (calls window.onQrScanned(text) with the QR content)
+        if (typeof Android !== "undefined" && Android.scanQr) {
+            Android.scanQr();
+            return;
+        }
+
+        // Option B: browser camera + BarcodeDetector
+        const status = document.getElementById("scanStatus");
+        status.textContent = "QR-Code auf dem Badge scannen / Scan the QR code on the badge";
+        openOverlay("scan");
+
+        if (!("BarcodeDetector" in window) || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+            status.textContent = "Kamera-Scan nicht verfügbar. / Camera scan not available.";
+            return;
+        }
+
+        try {
+            stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+            const video = document.getElementById("scanVideo");
+            video.srcObject = stream;
+            await video.play();
+
+            const detector = new BarcodeDetector({ formats: ["qr_code"] });
+            scanning = true;
+
+            const loop = async () => {
+                if (!scanning) return;
+                let wait = 300;
+                try {
+                    const codes = await detector.detect(video);
+                    if (codes.length) {
+                        if (handleScan(codes[0].rawValue)) { stopCamera(); return; }
+                        wait = 1500; // invalid code: give a moment before scanning again
+                    }
+                } catch (e) {}
+                setTimeout(loop, wait);
+            };
+            loop();
+        } catch (e) {
+            status.textContent = "Kamerazugriff verweigert. / Camera access denied. (" + (e && e.name ? e.name : "error") + ")";
+        }
+    }
+
+    function stopCamera() {
+        scanning = false;
+        if (stream) { stream.getTracks().forEach(t => t.stop()); stream = null; }
+        document.getElementById("scanVideo").srcObject = null;
+    }
+
+    function stopScan() {           // cancel button
+        stopCamera();
+        closeOverlay();
+    }
+
+    function showThanks() {
+        openOverlay("thanks");
+        let seconds = 10;
+        const el = document.getElementById("countdown");
+        el.textContent = seconds;
+        clearInterval(countdownTimer);
+        countdownTimer = setInterval(() => {
+            seconds--;
+            el.textContent = seconds;
+            if (seconds <= 0) {
+                clearInterval(countdownTimer);
+                closeOverlay();
+                showWelcome();
+            }
+        }, 1000);
+    }
+
+    // Also callable from native Android code: webView.evaluateJavascript("onQrScanned('...')", null)
+    window.onQrScanned = function (text) { handleScan(text); };
+
+    function parseEntryDate(str) {
+        if (!str) return null;
+        str = str.trim();
+        // German format: 27.10.2026 or 27.10.2026 14:30
+        let m = str.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})(?:[ ,T]+(\d{1,2}):(\d{2}))?/);
+        if (m) return new Date(+m[3], +m[2] - 1, +m[1], +(m[4] || 0), +(m[5] || 0)).toISOString();
+        const d = new Date(str);
+        return isNaN(d) ? null : d.toISOString();
+    }
+
+    function parseQr(text) {
+        const parts = String(text).split(/;|\r?\n|\t/).map(p => p.trim());
+        const m = (parts[0] || "").match(/\d+/);
+        if (!m) return null;
+        return {
+            id: pad(parseInt(m[0], 10)),
+            name: parts[1] || "",
+            firma: parts[2] || "",
+            email: parts[3] || "",
+            kontakt: parts[4] || "",
+            entry: parseEntryDate(parts[5])
+        };
+    }
+
+    // returns true if the QR code was valid and processed
+    function handleScan(text) {
+        const data = parseQr(text);
+        if (!data) { toast("Ungültiger QR-Code / Invalid QR code"); return false; }
+
+        const visitors = loadVisitors();
+        const now = new Date().toISOString();
+
+        let found = null;
+        for (let i = visitors.length - 1; i >= 0; i--) {
+            if (parseInt(visitors[i].id, 10) === parseInt(data.id, 10)) { found = visitors[i]; break; }
+        }
+
+        if (found) {
+            // known visitor: only add the check-out time (never overwrite an existing one)
+            if (!found.checkout) {
+                found.checkout = now;
+                saveVisitors(visitors);
+                saveToAndroid(found);
+            }
+        } else {
+            // badge printed outside the app: add a new line with the data from the QR code
+            const record = {
+                id: data.id,
+                vorname: data.name,
+                firma: data.firma,
+                email: data.email,
+                kontakt: data.kontakt,
+                language: "",
+                timestamp: data.entry || now,   // date of entrance from the QR code
+                checkout: now,
+                source: "scan-unknown",
+                consent_event: false, consent_marketing: false, consent_privacy: false
+            };
+            visitors.push(record);
+            saveVisitors(visitors);
+            saveToAndroid(record);
+        }
+
+        showThanks();
+        return true;
+    }
+
+    /* ================= SECRET ADMIN TAP ================= */
+    let tapCount = 0;
+    let tapTimer = null;
+
+    document.getElementById("secretHeader").addEventListener("click", () => {
+        tapCount++;
+        if (tapCount === 1) tapTimer = setTimeout(() => tapCount = 0, 3000);
+        if (tapCount >= 5) {
+            clearTimeout(tapTimer);
+            tapCount = 0;
+            window.location.href = "visitors.html";
+        }
+    });
+</script>
+
+</body>
+</html>
