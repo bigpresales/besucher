@@ -1,0 +1,75 @@
+
+/* ================= SETTINGS (replace) ================= */
+const ID_LENGTH = 6;                       // 000001
+ 
+// Names of the objects in your .lbx template (set in P-touch Editor).
+// If the QR does not change on the label, try "text_qr" instead of "barcode_qr".
+const QR_PARAM = "barcode_qr";
+const ID_PARAM = "text_id";                // set to null if the label has no ID text object
+ 
+ 
+/* ================= ID COUNTER (replace nextId) ================= */
+// Android: counter lives in SharedPreferences (survives clearing the web data).
+// Browser fallback: localStorage.
+function getNextId(list) {
+    if (typeof Android !== "undefined" && Android.nextBadgeId) {
+        const id = Android.nextBadgeId(ID_LENGTH);
+        // keep localStorage in sync as a second copy
+        try { localStorage.setItem("lastId", String(parseInt(id, 10))); } catch (e) {}
+        return id;
+    }
+ 
+    let max = 0;
+    try { max = parseInt(localStorage.getItem("lastId") || "0", 10) || 0; } catch (e) {}
+    list.forEach(v => { const n = parseInt(v.id, 10); if (n > max) max = n; });
+ 
+    const next = max + 1;
+    try { localStorage.setItem("lastId", String(next)); } catch (e) {}   // <- this was missing before
+    return pad(next);
+}
+ 
+ 
+/* ================= QR CONTENT ================= */
+// Format must match parseQr(): ID; Name; Firma; E-Mail; Kontakt; Eintrittsdatum
+function buildQrContent(v) {
+    const entry = new Date(v.timestamp)
+        .toLocaleString("de-DE", { dateStyle: "short", timeStyle: "short" })
+        .replace(",", "");                     // 28.10.2026 14:30
+ 
+    // semicolons / line breaks inside the data would break the format
+    const clean = s => String(s).replace(/[;\r\n\t]+/g, " ").trim();
+ 
+    return [v.id, v.vorname, v.firma, v.email, v.kontakt, entry].map(clean).join(";");
+}
+ 
+ 
+/* ================= checkIn(): replace only these lines ================= */
+// OLD:  const id = nextId(visitors);
+// NEW:
+//       const id = getNextId(visitors);
+//
+// OLD: the whole block from  "// print badge last..."  to  window.location.href = url;
+// NEW (below):
+ 
+function printBadge(visitor) {
+    let url = "brotherwebprint://print" +
+              "?filename=visitor_brother.lbx" +
+              "&size=164x102bm.bin" +
+              "&text_vorname=" + encodeURIComponent(visitor.vorname) +
+              "&text_firma="   + encodeURIComponent(visitor.firma);
+ 
+    if (ID_PARAM) url += "&" + ID_PARAM + "=" + encodeURIComponent(visitor.id);
+    url += "&" + QR_PARAM + "=" + encodeURIComponent(buildQrContent(visitor));
+ 
+    window.location.href = url;
+}
+ 
+/* In checkIn(), at the very end, after the toast:
+ *
+ *     toast((lang === "de" ? "Check-In erfolgreich. Badge-ID: " : "Checked in. Badge ID: ") + id);
+ *     printBadge(visitor);        // <-- replaces the old url building
+ *
+ * IMPORTANT: the form fields are cleared before this point, which is fine because
+ * printBadge() uses the `visitor` object, not the input fields.
+ */
+ 
